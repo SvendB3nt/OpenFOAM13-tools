@@ -1,0 +1,147 @@
+fvBoundaryMesh = fvMesh/fvBoundaryMesh
+
+
+fvPatches = fvMesh/fvPatches
+
+
+basicFvPatches = $(fvPatches)/basic
+
+
+constraintFvPatches = $(fvPatches)/constraint
+
+
+derivedFvPatches = $(fvPatches)/derived
+
+
+meshWave = algorithms/FvFaceCellWave
+
+
+wallDist = fvMesh/wallDist
+
+
+fvMeshMapper = fvMesh/fvMeshMapper
+
+
+extendedStencil = fvMesh/extendedStencil
+
+
+cellToCell = $(extendedStencil)/cellToCell
+
+
+cellToFace = $(extendedStencil)/cellToFace
+
+
+faceToCell = $(extendedStencil)/faceToCell
+
+
+fvMeshTopoChangers = fvMesh/fvMeshTopoChangers
+
+
+fvMeshDistributors = fvMesh/fvMeshDistributors
+
+
+fvMeshMovers = fvMesh/fvMeshMovers
+
+
+fvMeshStitchers = fvMesh/fvMeshStitchers
+
+
+fvPatchFields = fields/fvPatchFields
+
+
+basicFvPatchFields = $(fvPatchFields)/basic
+
+
+constraintFvPatchFields = $(fvPatchFields)/constraint
+
+
+derivedFvPatchFields = $(fvPatchFields)/derived
+$(derivedFvPatchFields)/inletOutletPipe/inletOutletPipeFvPatchFields.C
+$(derivedFvPatchFields)/turbulentPipeIntensityKineticEnergyInlet/turbulentPipeIntensityKineticEnergyInletFvPatchScalarField.C
+
+
+fvsPatchFields = fields/fvsPatchFields
+
+
+basicFvsPatchFields = $(fvsPatchFields)/basic
+
+constraintFvsPatchFields = $(fvsPatchFields)/constraint
+
+
+derivedFvsPatchFields = $(fvsPatchFields)/derived
+
+
+fvFieldSources = fields/fvFieldSources
+
+
+derivedFvFieldSources = $(fvFieldSources)/derived
+
+
+interpolation = interpolation/interpolation
+
+
+volPointInterpolation = interpolation/volPointInterpolation
+
+
+surfaceInterpolation = interpolation/surfaceInterpolation
+
+
+schemes = $(surfaceInterpolation)/schemes
+
+
+limitedSchemes = $(surfaceInterpolation)/limitedSchemes
+
+
+multivariateSchemes = $(surfaceInterpolation)/multivariateSchemes
+
+
+ddtSchemes = finiteVolume/ddtSchemes
+
+
+d2dt2Schemes = finiteVolume/d2dt2Schemes
+
+
+divSchemes = finiteVolume/divSchemes
+
+
+gradSchemes = finiteVolume/gradSchemes
+
+
+limitedGradSchemes = $(gradSchemes)/limitedGradSchemes
+
+
+snGradSchemes = finiteVolume/snGradSchemes
+
+
+convectionSchemes = finiteVolume/convectionSchemes
+
+
+laplacianSchemes = finiteVolume/laplacianSchemes
+
+
+general = cfdTools/general
+
+
+solutionControl = $(general)/solutionControl
+
+
+pimpleControl = $(solutionControl)/pimpleControl
+
+
+convergenceControl = $(solutionControl)/convergenceControl
+
+
+porosity = $(general)/porosityModel
+
+
+MRF = $(general)/MRF
+
+
+fvModels = $(general)/fvModels
+
+
+fvConstraints = $(general)/fvConstraints
+
+
+
+LIB = $(FOAM_USER_LIBBIN)/libuserFiniteVolume

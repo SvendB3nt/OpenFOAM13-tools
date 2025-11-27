@@ -1,0 +1,56 @@
+
+
+LESdelta = LES/LESdeltas
+
+
+
+LESfilters = LES/LESfilters
+
+
+
+# Turbulence BCs
+
+
+
+# Wall function BCs
+wallFunctions = derivedFvPatchFields/wallFunctions
+
+
+nutWallFunctions = $(wallFunctions)/nutWallFunctions
+
+
+epsilonWallFunctions = $(wallFunctions)/epsilonWallFunctions
+
+
+omegaWallFunctions = $(wallFunctions)/omegaWallFunctions
+
+
+kqRWallFunctions = $(wallFunctions)/kqRWallFunctions
+
+
+v2WallFunctions = $(wallFunctions)/v2WallFunctions
+
+
+fWallFunctions = $(wallFunctions)/fWallFunctions
+
+
+
+# Inlet turbulence BCs
+RASBC = RAS/derivedFvPatchFields
+$(RASBC)/turbulentPipeMixingLengthDissipationRateInlet/turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField.C
+$(RASBC)/turbulentPipeMixingLengthFrequencyInlet/turbulentPipeMixingLengthFrequencyInletFvPatchScalarField.C
+
+
+# Turbulence model values
+RASSC = RAS/derivedFvFieldSources
+#$(RASSC)/turbulentMixingLengthDissipationRate/turbulentMixingLengthDissipationRateFvScalarFieldSource.C
+#$(RASSC)/turbulentMixingLengthFrequency/turbulentMixingLengthFrequencyFvScalarFieldSource.C
+
+
+generalisedNewtonianViscosityModels = laminar/generalisedNewtonian/generalisedNewtonianViscosityModels
+
+
+strainRateViscosityModels = $(generalisedNewtonianViscosityModels)/strainRateViscosityModels
+
+
+LIB = $(FOAM_USER_LIBBIN)/libuserMomentumTransportModels
