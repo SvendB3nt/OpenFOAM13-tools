@@ -26,15 +26,9 @@ Class
 
 Description
     This boundary condition provides a turbulent kinetic energy condition
-<<<<<<< HEAD
-    for pipe flows. The turbulence intensity is based on either 
-    user-supplied hydraulic diameter of the patch, or shape of the patch.
-    The Reynolds number for the patched is based on area averaged values
-    of U and nu. 
-=======
     for pipe flows. The Reynolds number for the patched is based on area 
     averaged values of U and nu. 
->>>>>>> 6da4759 (Added decriptions to header files)
+
 
         \f[
             I = 0.16 Re^(-1/8)
