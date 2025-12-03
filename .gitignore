@@ -1,0 +1,6 @@
+platforms/
+run/
+**/lnInclude/
+**/linux64GccDPInt32Opt/
+**/dynamicCode
+**/*.foam

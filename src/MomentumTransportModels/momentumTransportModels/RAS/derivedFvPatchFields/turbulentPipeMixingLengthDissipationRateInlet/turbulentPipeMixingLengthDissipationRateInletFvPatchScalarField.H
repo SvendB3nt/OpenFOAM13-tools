@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2023 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2024 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -22,89 +22,62 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::turbulentPipeIntensityKineticEnergyInletFvPatchScalarField
+    Foam::turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField
 
 Description
-    This boundary condition provides a turbulent kinetic energy condition
-<<<<<<< HEAD
-    for pipe flows. The turbulence intensity is based on either 
-    user-supplied hydraulic diameter of the patch, or shape of the patch.
-    The Reynolds number for the patched is based on area averaged values
-    of U and nu. 
-=======
-    for pipe flows. The Reynolds number for the patched is based on area 
-    averaged values of U and nu. 
->>>>>>> 6da4759 (Added decriptions to header files)
+    This boundary condition provides a turbulence dissipation, \f$\epsilon\f$
+    (epsilon) inlet condition based on a specified mixing length.  The patch
+    values are calculated using:
 
         \f[
-            I = 0.16 Re^(-1/8)
-            k_p = 1.5 (I |U|)^2
+            \epsilon_p = \frac{C_{\mu}^{0.75} k^{1.5}}{L D_{h}}
         \f]
 
     where
 
     \vartable
-        Re      | reynolds number for the patch
-        I       | turbulence intensity
-        k_p     | kinetic energy at the patch
-        U       | velocity field
+        \epsilon_p | patch epsilon values
+        C_{\mu} | Model coefficient, set to 0.09
+        k       | turbulence kinetic energy
+        L       | length scale
+        D_h     | hydraulic Diameter
     \endvartable
-
-    In the event of reverse flow, a zero-gradient condition is applied.
 
 Usage
     \table
         Property     | Description             | Required    | Default value
-        U            | velocity field name     | no          | U
-        nu           | kinematic viscosity field name     | no          | nu
+        mixingLength | Length scale [m]        | yes         |
         phi          | flux field name         | no          | phi
+        k            | turbulence kinetic energy field name | no | k
+        Cmu          | Turbulence model coefficient | no | 0.09
         hydraulicDiameter | hydraulic diameter for the patch | no | - 
         shape        | geometry for hydraulic diameter (circle|square|rectangle) | no | circle
         shapeRatio   | (for rectangle only) a/b where a<=b (0<ratio<=1) | required if shape rectangle | -
     \endtable
 
-    Examples of the boundary condition specification:
+    Example of the boundary condition specification:
     \verbatim
     <patchName>
     {
-        type        turbulentPipeIntensityKineticEnergyInlet;
-        value       uniform 1;      // placeholder 
+        type            turbulentPipeMixingLengthDissipationRateInlet;
+        mixingLength    0.005;
+        value           uniform 200;   // placeholder
     }
-<<<<<<< HEAD
-
-    <patchName>
-    {
-        type        turbulentPipeIntensityKineticEnergyInlet;
-        value       uniform 1;      // placeholder
-        shape       rectangle;
-        shapeRatio  0.5;            // a/b (a is shortest side)
-    }
-
-    <patchName>
-    {
-        type        turbulentPipeIntensityKineticEnergyInlet;
-        value       uniform 1;      // placeholder
-        hydraulicDiameter 1; 
-    }
-
     \endverbatim
 
-See also
-    Foam::inletOutletFvPatchField
-=======
-    \endverbatim
+    Note:
+        In the event of reverse flow, a zero-gradient condition is applied
 
 See also
     Foam::inletOutletPipeFvPatchField
->>>>>>> 6da4759 (Added decriptions to header files)
 
 SourceFiles
-    turbulentPipeIntensityKineticEnergyInletFvPatchScalarField.C
+    turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef turbulentPipeIntensityKineticEnergyInletFvPatchScalarField_H
-#define turbulentPipeIntensityKineticEnergyInletFvPatchScalarField_H
+#ifndef turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField_H
+#define turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField_H
 
 #include "inletOutletPipeFvPatchFields.H"
 
@@ -114,32 +87,35 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-   Class turbulentPipeIntensityKineticEnergyInletFvPatchScalarField Declaration
+ Class turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class turbulentPipeIntensityKineticEnergyInletFvPatchScalarField
+class turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField
 :
     public inletOutletPipeFvPatchScalarField
 {
     // Private Data
-        //- Name of the velocity field
-        word UName_;
 
-        //- Name of the kinematic viscosity field
-        word nuName_;
+        //- Turbulent length scale
+        scalar turbulentLengthScale_;
 
- 
+        //- Name of the turbulent kinetic energy field
+        word kName_;
+
+        //- Turbulence model coefficient
+        scalar Cmu_;
+
 
 public:
 
     //- Runtime type information
-    TypeName("turbulentPipeIntensityKineticEnergyInlet");
+    TypeName("turbulentPipeMixingLengthDissipationRateInlet");
 
 
     // Constructors
 
         //- Construct from patch, internal field and dictionary
-        turbulentPipeIntensityKineticEnergyInletFvPatchScalarField
+        turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
@@ -147,32 +123,26 @@ public:
         );
 
         //- Construct by mapping given
-        //  turbulentPipeIntensityKineticEnergyInletFvPatchScalarField
+        //  turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField
         //  onto a new patch
-        turbulentPipeIntensityKineticEnergyInletFvPatchScalarField
+        turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField
         (
-            const turbulentPipeIntensityKineticEnergyInletFvPatchScalarField&,
+            const turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fieldMapper&
         );
 
         //- Disallow copy without setting internal field reference
-        turbulentPipeIntensityKineticEnergyInletFvPatchScalarField
+        turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField
         (
-            const turbulentPipeIntensityKineticEnergyInletFvPatchScalarField&
+            const turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField&
         ) = delete;
 
         //- Copy constructor setting internal field reference
-        turbulentPipeIntensityKineticEnergyInletFvPatchScalarField
+        turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField
         (
-            const turbulentPipeIntensityKineticEnergyInletFvPatchScalarField&,
-            const DimensionedField<scalar, volMesh>&
-        );
-
-        turbulentPipeIntensityKineticEnergyInletFvPatchScalarField
-        (
-            const fvPatch&,
+            const turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField&,
             const DimensionedField<scalar, volMesh>&
         );
 
@@ -184,7 +154,7 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new turbulentPipeIntensityKineticEnergyInletFvPatchScalarField
+                new turbulentPipeMixingLengthDissipationRateInletFvPatchScalarField
                 (
                     *this,
                     iF
@@ -201,11 +171,10 @@ public:
         //- Write
         virtual void write(Ostream&) const;
 
-    
 };
 
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
 

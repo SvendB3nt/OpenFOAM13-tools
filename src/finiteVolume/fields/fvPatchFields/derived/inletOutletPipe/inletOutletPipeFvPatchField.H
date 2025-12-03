@@ -25,25 +25,74 @@ Class
     Foam::inletOutletPipeFvPatchField
 
 Description
+<<<<<<< HEAD
     This boundary condition provides a generic outflow condition, with
     specified inflow for the case of return flow.
+=======
+    This boundary condition is an extention of the inletOutlet. 
+    It provides child classes with access to a user defined hydraulic 
+    diameter or one that is calculatedfor simple cross sectional 
+    geometries.
+>>>>>>> 6da4759 (Added decriptions to header files)
 
 Usage
     \table
         Property     | Description             | Required    | Default value
         phi          | Flux field name         | no          | phi
         inletValue   | Inlet value for reverse flow | yes    |
+<<<<<<< HEAD
+=======
+        hydraulicDiameter | hydraulic diameter for the patch | no | - 
+        shape        | geometry for hydraulic diameter (circle|square|rectangle) | no | circle
+        shapeRatio   | (for rectangle only) a/b where a<=b (0<ratio<=1) | required if shape rectangle | -
+>>>>>>> 6da4759 (Added decriptions to header files)
     \endtable
 
     Example of the boundary condition specification:
     \verbatim
     <patchName>
     {
+<<<<<<< HEAD
         type            inletOutlet;
+=======
+        type            inletOutletPipe;
+>>>>>>> 6da4759 (Added decriptions to header files)
         phi             phi;
         inletValue      uniform 0;
         value           uniform 0;
     }
+<<<<<<< HEAD
+=======
+
+    <patchName>
+    {
+        type            inletOutletPipe;
+        phi             phi;
+        inletValue      uniform 0;
+        value           uniform 0;
+        hydraulicDiameter    1;
+    }
+
+    <patchName>
+    {
+        type            inletOutletPipe;
+        phi             phi;
+        inletValue      uniform 0;
+        value           uniform 0;
+        shape           square;
+    }
+
+    <patchName>
+    {
+        type            inletOutletPipe;
+        phi             phi;
+        inletValue      uniform 0;
+        value           uniform 0;
+        shape           rectangle;
+        shapeRatio      0.6;
+    }
+
+>>>>>>> 6da4759 (Added decriptions to header files)
     \endverbatim
 
     The mode of operation is determined by the sign of the flux across the
