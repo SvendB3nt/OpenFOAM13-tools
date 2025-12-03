@@ -64,33 +64,10 @@ Usage
         type        turbulentPipeIntensityKineticEnergyInlet;
         value       uniform 1;      // placeholder 
     }
-<<<<<<< HEAD
-
-    <patchName>
-    {
-        type        turbulentPipeIntensityKineticEnergyInlet;
-        value       uniform 1;      // placeholder
-        shape       rectangle;
-        shapeRatio  0.5;            // a/b (a is shortest side)
-    }
-
-    <patchName>
-    {
-        type        turbulentPipeIntensityKineticEnergyInlet;
-        value       uniform 1;      // placeholder
-        hydraulicDiameter 1; 
-    }
-
-    \endverbatim
-
-See also
-    Foam::inletOutletFvPatchField
-=======
     \endverbatim
 
 See also
     Foam::inletOutletPipeFvPatchField
->>>>>>> 6da4759 (Added decriptions to header files)
 
 SourceFiles
     turbulentPipeIntensityKineticEnergyInletFvPatchScalarField.C
