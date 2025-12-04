@@ -15,6 +15,6 @@ source . /opt/openfoam13/etc/bashrc \
 && cd $WM_PROJECT_USER_DIR \
 && git clone https://github.com/SvendB3nt/OpenFOAM13-tools \
 && cd src \
-&& ./Allwmake
-&& cd ..
+&& ./Allwmake \
+&& cd .. 
 ```
