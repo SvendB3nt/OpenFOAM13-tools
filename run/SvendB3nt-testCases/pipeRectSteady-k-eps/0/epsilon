@@ -25,7 +25,7 @@ boundaryField
         type            turbulentPipeMixingLengthDissipationRateInlet;
         value           $internalField;
         shape           rectangle;
-        shapeRatio      0.7;
+        shapeRatio      0.5;
     }
     outlet
     {
