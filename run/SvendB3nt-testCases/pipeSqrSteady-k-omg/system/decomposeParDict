@@ -1,0 +1,33 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  13
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    note        "mesh decomposition control dictionary";
+    object      decomposeParDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+numberOfSubdomains  2;
+
+method          simple;
+
+simpleCoeffs
+{
+    // Number of processor blocks in each coordinate direction
+    n           (1 2 1);
+
+    // Coefficient of the slight rotation of the mesh to bias the decomposition
+    // to be deterministic in the case that the initial block mesh is coordinate
+    // aligned
+    delta       0.001;
+}
+
+
+// ************************************************************************* //

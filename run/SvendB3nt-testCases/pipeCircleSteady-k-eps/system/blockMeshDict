@@ -1,0 +1,316 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  13
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      blockMeshDict;
+}
+
+convertToMeters 1.0;
+
+/* Core parameters */
+D 1.0;
+angDeg 45;
+rFac 0.65;
+DIn 3.0;
+DOut 5.0;
+RB 3.0;
+
+tan    10; 
+rad    10; 
+inAx   30;
+bendAx 40;
+outAx  50;
+
+
+R #calc "0.5 * $D";
+mR #calc "-0.5 * $D";
+ang #calc "degToRad($angDeg)";
+Ri #calc "$rFac * $R";
+
+xi #calc "$Ri * cos($ang)";
+yi #calc "$Ri * sin($ang)";
+mxi #calc "-1.0 * $xi";
+myi #calc "-1.0 * $yi";
+
+xo #calc "$R * cos($ang)";
+yo #calc "$R * sin($ang)";
+mxo #calc "-1.0 * $xo";
+myo #calc "-1.0 * $yo";
+
+XB #calc "-1.0* $RB";
+zbi #calc "$DIn + $RB + $xi";
+mzbi #calc "$DIn + $RB + $mxi";
+zbo #calc "$DIn + $RB + $xo";
+mzbo #calc "$DIn + $RB + $mxo";
+
+CRBV #calc "$DIn + $RB";
+CRBHo #calc "$DIn + $RB + $R";
+CRBHi #calc "$DIn + $RB - $R";
+
+XACII #calc "-$RB + ($RB-$xi)*sin($ang)";
+ZACII #calc "$DIn + ($RB-$xi)*cos($ang)";
+XACIO #calc "-$RB + ($RB-$xo)*sin($ang)";
+ZACIO #calc "$DIn + ($RB-$xo)*cos($ang)";
+
+XACOI #calc "-$RB + ($RB+$xi)*sin($ang)";
+ZACOI #calc "$DIn + ($RB+$xi)*cos($ang)";
+XACOO #calc "-$RB + ($RB+$xo)*sin($ang)";
+ZACOO #calc "$DIn + ($RB+$xo)*cos($ang)";
+
+XBE #calc "$XB - $DOut";
+
+
+vertices
+(
+    // Inlet cross-section (z = 0 plane)
+    ($mxi $yi 0)    // 0
+    ($xi $yi 0)     // 1 
+    ($xi $myi 0)    // 2
+    ($mxi $myi 0)   // 3
+    
+    ($mxo $yo 0)    // 4
+    ($xo $yo 0)     // 5
+    ($xo $myo 0)    // 6
+    ($mxo $myo 0)   // 7
+
+    ($mxi $yi $DIn)    // 8
+    ($xi $yi $DIn)     // 9 
+    ($xi $myi $DIn)    // 10
+    ($mxi $myi $DIn)   // 11
+    
+    ($mxo $yo $DIn)    // 12
+    ($xo $yo $DIn)     // 13
+    ($xo $myo $DIn)    // 14
+    ($mxo $myo $DIn)   // 15
+
+    ($XB $yi $mzbi)    // 16
+    ($XB $yi  $zbi)    // 17 
+    ($XB $myi $zbi)    // 18
+    ($XB $myi $mzbi)   // 19
+    
+    ($XB $yo $mzbo)    // 20
+    ($XB $yo $zbo)     // 21
+    ($XB $myo $zbo)    // 22
+    ($XB $myo $mzbo)   // 23
+
+    ($XBE $yi $mzbi)    // 24
+    ($XBE $yi  $zbi)    // 25 
+    ($XBE $myi $zbi)    // 26
+    ($XBE $myi $mzbi)   // 27
+    
+    ($XBE $yo $mzbo)    // 28
+    ($XBE $yo $zbo)     // 29
+    ($XBE $myo $zbo)    // 30
+    ($XBE $myo $mzbo)   // 31
+   
+);
+
+
+yDis 0.7;
+yBL #calc "1.0-$yDis";
+
+yCell 0.5;
+yCellBC #calc "1.0-$yCell";
+
+yExp 0.25;
+blocks
+(
+    
+    hex (3 2 1 0 11 10 9 8) ($rad $rad $inAx) simpleGrading (1 1 1)
+    hex (0 1 5 4 8 9 13 12) ($rad $tan $inAx) simpleGrading
+    (
+        1                  
+        (
+            ($yDis $yCell 1)    
+            ($yBL $yCellBC $yExp)  
+        )
+        1                  
+    )
+    hex (1 2 6 5 9 10 14 13) ($rad $tan $inAx) simpleGrading
+    (
+        1                  
+        (
+            ($yDis $yCell 1)    
+            ($yBL $yCellBC $yExp)  
+        )
+        1                  
+    )
+    hex (2 3 7 6 10 11 15 14) ($rad $tan $inAx) simpleGrading
+    (
+        1                  
+        (
+            ($yDis $yCell 1)    
+            ($yBL $yCellBC $yExp)  
+        )
+        1                  
+    )
+    hex (3 0 4 7 11 8 12 15) ($rad $tan $inAx) simpleGrading
+    (
+        1                  
+        (
+            ($yDis $yCell 1)    
+            ($yBL $yCellBC $yExp)  
+        )
+        1                  
+    )
+
+    hex (11 10 9 8 19 18 17 16) ($rad $rad $bendAx) simpleGrading (1 1 1)        
+    hex (8 9 13 12 16 17 21 20) ($rad $tan $bendAx) simpleGrading
+    (
+        1                  
+        (
+            ($yDis $yCell 1)    
+            ($yBL $yCellBC $yExp)  
+        )
+        1                  
+    )
+    hex (9 10 14 13 17 18 22 21) ($rad $tan $bendAx) simpleGrading
+    (
+        1                  
+        (
+            ($yDis $yCell 1)    
+            ($yBL $yCellBC $yExp)  
+        )
+        1                  
+    )
+
+    hex (10 11 15 14 18 19 23 22) ($rad $tan $bendAx) simpleGrading
+    (
+        1                  
+        (
+            ($yDis $yCell 1)    
+            ($yBL $yCellBC $yExp)  
+        )
+        1                  
+    )
+    hex (11 8 12 15 19 16 20 23) ($rad $tan $bendAx) simpleGrading
+    (
+        1                  
+        (
+            ($yDis $yCell 1)    
+            ($yBL $yCellBC $yExp)  
+        )
+        1                  
+    )
+
+    hex (19 18 17 16 27 26 25 24) ($rad $rad $outAx) simpleGrading (1 1 1)        
+    hex (16 17 21 20 24 25 29 28) ($rad $tan $outAx) simpleGrading
+    (
+        1                  
+        (
+            ($yDis $yCell 1)    
+            ($yBL $yCellBC $yExp)  
+        )
+        1                  
+    )
+    hex (17 18 22 21 25 26 30 29) ($rad $tan $outAx) simpleGrading
+        (
+            1                  
+            (
+                ($yDis $yCell 1)    
+                ($yBL $yCellBC $yExp)  
+            )
+            1                  
+        )
+
+    hex (18 19 23 22 26 27 31 30) ($rad $tan $outAx) simpleGrading
+        (
+            1                  
+            (
+                ($yDis $yCell 1)    
+                ($yBL $yCellBC $yExp)  
+            )
+            1                  
+        )
+    hex (19 16 20 23 27 24 28 31) ($rad $tan $outAx) simpleGrading
+        (
+            1                  
+            (
+                ($yDis $yCell 1)    
+                ($yBL $yCellBC $yExp)  
+            )
+            1                  
+        )
+);
+
+edges
+(
+    arc 4 5 (0 $R 0)
+    arc 5 6 ($R 0 0)
+    arc 6 7 (0 $mR 0)
+    arc 7 4 ($mR 0 0)
+
+    arc 12 13 (0 $R $DIn)
+    arc 13 14 ($R 0 $DIn)
+    arc 14 15 (0 $mR $DIn)
+    arc 15 12 ($mR 0 $DIn)
+
+    arc 20 21 ($XB $R $CRBV)
+    arc 21 22 ($XB 0 $CRBHo)
+    arc 22 23 ($XB $mR $CRBV)
+    arc 23 20 ($XB 0 $CRBHi)
+
+    arc 8 16 ($XACII $yi $ZACII)
+    arc 11 19 ($XACII $myi $ZACII)
+    arc 9 17 ($XACOI $yi $ZACOI)
+    arc 10 18 ($XACOI $myi $ZACOI)
+
+    arc 12 20 ($XACIO $yo $ZACIO)
+    arc 15 23 ($XACIO $myo $ZACIO)
+    arc 13 21 ($XACOO $yo $ZACOO)
+    arc 14 22 ($XACOO $myo $ZACOO)
+
+    arc 28 29 ($XBE $R $CRBV)
+    arc 29 30 ($XBE 0 $CRBHo)
+    arc 30 31 ($XBE $mR $CRBV)
+    arc 31 28 ($XBE 0 $CRBHi)
+);
+
+defaultPatch
+{
+    name walls; 
+    type wall;
+}
+
+boundary
+(
+    
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (3 2 1 0)
+            (0 1 5 4)
+            (1 2 6 5)
+            (2 3 7 6)
+            (3 0 4 7)
+        );
+    }
+    
+    outlet
+    {
+        type patch;
+        faces
+        (
+            (24 25 26 27)
+            (28 29 25 24)
+            (29 30 26 25)
+            (30 31 27 26)
+            (31 28 24 27)
+        );
+    }
+
+);
+
+mergePatchPairs();

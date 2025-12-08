@@ -1,0 +1,26 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+runApplication blockMesh
+
+#The mesh is spilt in Y so that the inlet patch is divided in two.
+#This is to test for proper use of global functions e.g. gSum.
+runApplication decomposePar
+
+foamDictionary -entry endTime -set 50 system/controlDict
+#run case for 50 iterations
+runApplication runParallel
+
+# restart simulation to check that the BC is reconstructed correctly 
+foamDictionary -entry endTime -set 500 system/controlDict
+
+runApplication runParallel
+
+runApplication reconstuctPar -latestTime
+
+touch "${PWD##*/}.foam"
+
+#------------------------------------------------------------------------------
